@@ -45,7 +45,7 @@
             </label>
           </div>
         </fieldset>
-        <button id="idEnviar" type="submit" class="d-inline btn btn-primary btn-lg m-2">Jugar</button>
+        <button id="idEnviar" type="submit" class="d-inline btn btn-primary btn-lg m-2">Comenzar</button>
       </form>
       <div>
         <span class="small my-2">*campos obligatorios</span>

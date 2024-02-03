@@ -15,7 +15,8 @@ class PartidaModel extends Model
                                 'fecha_Finalizado', 
                                 'tiempoLimite', 
                                 'tiempoEnCurso', 
-                                'intentosRestantes', 
+                                'intentosRestantes',
+                                'tipoCarta', 
                                 'idUsuario', 
                                 'idEstadoPartida', 
                                 'idDificultad'];
@@ -28,4 +29,16 @@ class PartidaModel extends Model
     protected $validationRules = [];
     protected $validationMessages = [];
     protected $skipValidation = false;
+    
+    /**
+     * Buscar Partida con el idUsuario y el idEstadoPartida
+     * idEstadoPartida:
+     * 1= En ejecucion
+     * 2= pausado
+     * 3= finalizado
+     */
+    function buscarPartida($idUsuario, $idEstadoPartida){
+        $partida = $this->where('idUsuario', $idUsuario)->where('idEstadoPartida', $idEstadoPartida)->first();
+        return $partida;
+    }
 }

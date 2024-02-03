@@ -26,4 +26,8 @@ class DificultadModel extends Model
         $dificultad = $this->where('nivelDificultad', $nivelDificultad)->first();
         return $dificultad;
     }
+    function buscarDificultadId($idDificultad){
+        $dificultad = $this->where('idDificultad', $idDificultad)->first();
+        return $dificultad;
+    }
 }

@@ -33,7 +33,12 @@ class GestionController extends BaseController
         if (!isset($this->session->idUsuario)) {
             return redirect()->to(base_url());
         } else {
-            echo view('index-cliente');
+            $idUsuario = $this->session->idUsuario;
+            $datos = [
+                'partidaPausada' => $this->partida->buscarPartida($idUsuario,1),
+                'partidaAbandonada' => $this->partida->buscarPartida($idUsuario,2)
+            ];
+            echo view('index-cliente', $datos);
             }
         
     }
@@ -56,8 +61,13 @@ class GestionController extends BaseController
     }
     public function empezarJuego()
     {
-        $datos = ['variable' => 'algo'];
-        echo view('layouts/empezar-juego', $datos);
+        $partida = $this->partida->buscarPartida($this->session->idUsuario, 3);
+        $dificultad = $this->dificultad->buscarDificultadId($partida['idDificultad']);
+        $cartas = $this->carta->buscarCartas($dificultad['cantCartas']/2,$partida['tipoCarta']);
+        $datosPartida = ['cartas' => $cartas,
+                'dificultad'=> $dificultad,
+                'partida' => $partida];
+        echo view('layouts/empezar-juego', $datosPartida);
     }
     public function subirOpcionesPartida()
     {
@@ -68,7 +78,6 @@ class GestionController extends BaseController
             $arr = ["code" => "400", "msg" => "error"];
         }else{
             $dificultad = $this->dificultad->buscarDificultad($tipoDificultad);
-            $cartas=$this->carta->buscarCartas($dificultad['cantCartas']/2,$tipoCartas);
             if ($cantTiempo === 'sin_tiempo'){
                 $tiempoLimite = null;
             }else{
@@ -78,26 +87,13 @@ class GestionController extends BaseController
                 'fecha_Inicio' => Time::now('America/Argentina/Ushuaia'),
                 'tiempoLimite' => $tiempoLimite,
                 'intentosRestantes' => $dificultad['cantIntentos'],
+                'tipoCarta' => $tipoCartas,
                 'idUsuario' => $this->session->idUsuario,
-                'idEstadoPartida' => '1',
+                'idEstadoPartida' => '3',
                 'idDificultad' => $dificultad['idDificultad'],
                 ]);
             $arr = ["code" => "400", "msg" => "clear"];
         }
-        
-
-        
-
-        // $this->usuario->insert([
-        //     'usu_nametag' => $this->request->getPost('usu_nametag'),
-        //     'usu_fecha_nacimiento' => $this->request->getPost('usu_fecha'),
-        //     'usu_correo' => $this->request->getPost('usu_correo'),
-        //     'usu_code_activacion' => $codigo,
-        //     'usu_password' => base64_encode($this->request->getPost('usu_password')),
-        //     'usu_fecha_registro' => date('Y-m-d H:i:s', now()),
-        //     'usu_estado' => 'P'
-                           
-        // ]);
         echo json_encode($arr);
         die();
     }

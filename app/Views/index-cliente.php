@@ -63,9 +63,13 @@ $user_session = session();
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-              <a id="id_empezar" class="collapse-item" href="#"> <i class="far fa-play-circle"></i> Empezar juego</a>
-              <a id="id_opciones_partida" class="collapse-item" href="#"> <i class="fas fa-cog"></i> Opciones de partida</a>
-              <a id="id_reanudar_partida" class="collapse-item" href="#"> <i class="fas fa-undo-alt"></i> Reanudar partida </a>
+              <?php if(isset($partidaPausada)){?>
+                <a id="id_nueva_partida" class="collapse-item" href="#" hidden> <i class="fas fa-cog"></i> Nueva partida</a>
+                <a id="id_reanudar_partida" class="collapse-item" href="#"> <i class="fas fa-undo-alt"></i> Reanudar partida </a>
+              <?php }else {?>
+                <a id="id_nueva_partida" class="collapse-item" href="#"> <i class="fas fa-cog"></i> Nueva partida</a>
+                <a id="id_reanudar_partida" class="collapse-item" href="#" hidden> <i class="fas fa-undo-alt"></i> Reanudar partida </a>
+              <?php }?>
           </div>
         </div>
       </li>
@@ -111,13 +115,7 @@ $user_session = session();
                 <i class="fas fa-bell fa-fw"></i>
                 <!-- Counter - Alerts -->
                 <span class="badge badge-danger badge-counter">
-                  <?php if ($user_session->suspendido == 1) {
-                    echo '+1';
-                  } else if($user_session->suspendido == 1 && $user_session->alternativo==0){
-                    echo '+2';
-                  } else if($user_session->alternativo==0){
-                    echo '+1';
-                  }?>
+                  <?php echo '+1';?>
                 </span>
               </a>
               <!-- Dropdown - Alerts -->
@@ -125,7 +123,18 @@ $user_session = session();
                 <h6 class="dropdown-header">
                   Alertas
                 </h6>
-                <?php if ($user_session->suspendido == 1) { ?>
+                  <?php if(isset($partidaAbandonada)){?>
+                    <a class="dropdown-item d-flex align-items-center" href="#">
+                      <div class="mr-3">
+                        <div class="icon-circle bg-warning">
+                          <i class="fas fa-exclamation-triangle text-white"></i>
+                        </div>
+                      </div>
+                      <div>
+                        <div class="small text-gray-500">¡Estas en una partida! Buena suerte</div>
+                      </div>
+                    </a>
+                <?php }else{?>
                   <a class="dropdown-item d-flex align-items-center" href="#">
                     <div class="mr-3">
                       <div class="icon-circle bg-warning">
@@ -133,38 +142,10 @@ $user_session = session();
                       </div>
                     </div>
                     <div>
-                      <div class="small text-gray-500">¡Estás suspendido!</div>
-                      No vas a poder alquilar
-                      <?php echo ' desde  ' . date("d/m/y", strtotime($user_session->fechaInicio)) . ' hasta ' . date("d/m/y", strtotime($user_session->fechaFin)) ?>.
-                      Acercate a un punto de entrega.
+                      <div class="small text-gray-500">¡Dale a nueva partida!</div>
                     </div>
                   </a>
-                <?php } else if($user_session->alternativo==0){?>
-                  <a class="dropdown-item d-flex align-items-center" href="#">
-                    <div class="mr-3">
-                      <div class="icon-circle bg-warning">
-                        <i class="fas fa-exclamation-triangle text-white"></i>
-                      </div>
-                    </div>
-                    <div>
-                      <div class="small text-gray-500">¡Te asignaron un alquiler!</div>
-                      El cliente
-                      <?php echo ' '.$user_session->nombreOriginal.' '.$user_session->apellidoOriginal.' te asigno un alquiler para su devolucion.' ?>
-                    </div>
-                  </a>
-                  <?php } else{ ?>>
-                  <a class="dropdown-item d-flex align-items-center" href="#">
-                    <div class="mr-3">
-                      <div class="icon-circle bg-warning">
-                        <i class="fas fa-check-circle text-white"></i>
-                      </div>
-                    </div>
-                    <div>
-                      <div class="small text-gray-500">¡Todo correcto!</div>
-                      No hay notificaciones nuevas.
-                    </div>
-                  </a>
-                <?php } ?>
+                <?php }?>
               </div>
             </li>
             
@@ -176,7 +157,6 @@ $user_session = session();
                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">
                   <?php echo $user_session->usu_nametag; ?></span>
                 <i class="fas fa-user"></i>
-                <!-- <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60"> -->
               </a>
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
@@ -199,28 +179,23 @@ $user_session = session();
           </ul>
           
         </nav>
-        <!-- Mensaje de bienvenida -->
-        <!-- <div>
-          <a href="#">Mensaje de bienvenida</a>
-        </div> -->
-        <!-- End of Topbar -->
-
-        <div id="avisos">
-          </div>
-          <!-- Begin Page Content Body -->
-          <div id="contenido" class="container-fluid">
-            <!--------------------------------------mensajes de los modales ---------------------------------------------------->
-            
-            <div id="notificaciones" class="row align-items-center justify-content-center vh-50 w-100">
-              <!-- lo cambiamos pa proba -->
-              
-            </div>
-            
-          </div>
-
-        <!-- /.container-fluid -->
-
-
+        <div id="avisos"></div>
+        <!-- Begin Page Content Body -->
+        <div id="contenido" class="container-fluid">
+          <!--------------------------------------mensajes de los modales ---------------------------------------------------->
+          
+          <div id="notificaciones" class="column text-center" style="background: white;">
+            <?php if (isset($partidaFinalizada)) {?>
+              <h1 class="my-3">¡Bienvenido <?php echo $user_session->usu_nametag; ?>!</h1>
+              <h2 class="my-3">Tu ultima partida fue el: <?php echo $partidaFinalizada['fecha_Finalizado']; ?></h2>
+              <h2 class="my-3">Los resultados fueron: Usted <?php echo $partidaFinalizada['resultado']; ?></h2>
+              <h3 class="my-3">Difiultad: <?php echo $partidaFinalizada['idDificultad']; ?></h3>
+            <?php }else {?>
+              <h1 class="my-3">¡Bienvenido <?php echo $user_session->usu_nametag; ?>!</h1>
+              <h2 class="my-3">¡Aún no has jugado una partida!</h2>
+            <?php }?>
+          </div>   
+        </div>
         <!-- End of Main Content -->
       </div>
 
@@ -245,24 +220,6 @@ $user_session = session();
     <i class="fas fa-angle-up"></i>
   </a>
 
-  <!-- Logout Modal-->
-  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-          <a class="btn btn-primary" href="login.html">Logout</a>
-        </div>
-      </div>
-    </div>
-  </div>
   <!-- Bootstrap core JavaScript-->
   <script src="<?php echo base_url('vendor/jquery/jquery.min.js') ?>"></script>
   <script src="<?php echo base_url('vendor/bootstrap/js/bootstrap.bundle.min.js') ?>"></script>
@@ -282,7 +239,6 @@ $user_session = session();
   <!-- Page level custom scripts -->
   <script src="<?php echo base_url('ajax/modificar-usuario.js') ?>"></script>
   <script src="<?php echo base_url('ajax/baja-usuario.js') ?>"></script>
-  <script src="<?php echo base_url('ajax/empezar-juego.js') ?>"></script>
   <script src="<?php echo base_url('ajax/opciones-partida.js') ?>"></script>
   <script src="<?php echo base_url('ajax/modales.js') ?>"></script>
 </body>

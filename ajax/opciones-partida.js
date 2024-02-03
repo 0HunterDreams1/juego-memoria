@@ -1,5 +1,5 @@
-const btn_opciones_partida = document.getElementById("id_opciones_partida");
-btn_opciones_partida.addEventListener("click", ventanaOpcionesPartida, true);
+const btn_nueva_partida = document.getElementById("id_nueva_partida");
+btn_nueva_partida.addEventListener("click", ventanaOpcionesPartida, true);
 
 function ventanaOpcionesPartida() {
   let xhr = new XMLHttpRequest();
@@ -75,19 +75,33 @@ function enviarOpcionesPartida(e) {
       if (data.msg === "error") {
         msj.innerHTML = `
         <div id="noti" class="alert alert-danger w-50" role="alert">
-           ¡Llenar todos los campos obligatorios!
+           ¡Debe llenar todos los campos, para poder comenzar la partida!
         </div>`;
       }
       else if(data.msg === "clear"){
         console.log(data);
-        let boton = document.getElementById("idEnviar");
-        boton.disabled = true;
-        msj.innerHTML = `
-        <div id="noti" class="alert alert-success" role="alert">
-           ¡Configuracion de partida lista, ya puedes jugar!
-        </div>`;
+        mostrarJuego();
       }
     }
   });
 }
-    
+function mostrarJuego() {
+  let xhr = new XMLHttpRequest();
+  xhr.addEventListener("readystatechange", estadoIdeal);
+
+  xhr.open(
+    "GET",
+    "http://localhost/juego-memoria/GestionController/empezarJuego",
+    true
+    );
+    xhr.send();
+
+  function estadoIdeal() {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+          let respuesta = xhr.responseText;
+          let contenedor = document.getElementById('contenido');
+          contenedor.innerHTML = respuesta;
+
+      }
+  }
+}
