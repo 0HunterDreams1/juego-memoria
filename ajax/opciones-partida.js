@@ -101,7 +101,6 @@ function mostrarJuego() {
           let respuesta = xhr.responseText;
           let contenedor = document.getElementById('contenido');
           contenedor.innerHTML = respuesta;
-
       }
   }
 }

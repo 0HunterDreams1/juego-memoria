@@ -1,0 +1,16 @@
+.imagenCarta{
+    width:195px;
+    height:240px;
+    background-size: cover;
+}
+.imagenGrande{
+    transform:scale(1.2);
+}
+.imagenCarta:hover{
+    transform:scale(1.2);
+}
+.cardTamanio{
+    margin: 10px;
+    width:195px;
+    height:240px;
+}

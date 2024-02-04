@@ -15,6 +15,7 @@ $user_session = session();
   <title>Juego memoria - Home</title>
   <link href="<?php echo base_url('vendor/fontawesome-free/css/all.min.css') ?>" rel="stylesheet" type="text/css">
   <link href="<?php echo base_url('/css/css.css') ?>" rel="stylesheet">
+  <link href="<?php echo base_url('/css/estiloManual.css') ?>" rel="stylesheet">
 
   <!-- Custom styles for this template -->
   <link href="<?php echo base_url('css/sb-admin-2.min.css') ?>" rel="stylesheet">
@@ -240,6 +241,7 @@ $user_session = session();
   <script src="<?php echo base_url('ajax/modificar-usuario.js') ?>"></script>
   <script src="<?php echo base_url('ajax/baja-usuario.js') ?>"></script>
   <script src="<?php echo base_url('ajax/opciones-partida.js') ?>"></script>
+  <script src="<?php echo base_url('ajax/partida.js') ?>"></script>
   <script src="<?php echo base_url('ajax/modales.js') ?>"></script>
 </body>
 

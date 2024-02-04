@@ -15,7 +15,7 @@ class PartidaModel extends Model
                                 'fecha_Finalizado', 
                                 'tiempoLimite', 
                                 'tiempoEnCurso', 
-                                'intentosRestantes',
+                                'intentos',
                                 'tipoCarta', 
                                 'idUsuario', 
                                 'idEstadoPartida', 
@@ -40,5 +40,13 @@ class PartidaModel extends Model
     function buscarPartida($idUsuario, $idEstadoPartida){
         $partida = $this->where('idUsuario', $idUsuario)->where('idEstadoPartida', $idEstadoPartida)->first();
         return $partida;
+    }
+    function buscarUltimaPartida($idUsuario){
+        $partida = $this->where('idUsuario', $idUsuario)->orderBy('idPartida', 'DESC')->first();
+        return $partida;
+    }
+    function buscarTodasPartidas($idUsuario){
+        $partidas = $this->where('idUsuario', $idUsuario)->findAll();
+        return $partidas;
     }
 }

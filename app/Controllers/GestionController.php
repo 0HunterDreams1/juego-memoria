@@ -61,12 +61,24 @@ class GestionController extends BaseController
     }
     public function empezarJuego()
     {
-        $partida = $this->partida->buscarPartida($this->session->idUsuario, 3);
+        $idUsuario = $this->session->idUsuario;
+        $partida = $this->partida->buscarUltimaPartida($idUsuario);
+        $partidas = $this->partida->buscarTodasPartidas($idUsuario);
+        if ($partidas!= NULL) {
+            $cantPartidas=sizeof($partidas);
+        }else{
+            $cantPartidas=1;
+        }
         $dificultad = $this->dificultad->buscarDificultadId($partida['idDificultad']);
         $cartas = $this->carta->buscarCartas($dificultad['cantCartas']/2,$partida['tipoCarta']);
         $datosPartida = ['cartas' => $cartas,
                 'dificultad'=> $dificultad,
-                'partida' => $partida];
+                'partida' => $partida,
+                'cantPartidas' => $cantPartidas];
+        $datos = [
+            'usu_cantidad_partidas' => $cantPartidas
+        ];
+        $this->usuario->actualizarCantPartidas($idUsuario,$datos);
         echo view('layouts/empezar-juego', $datosPartida);
     }
     public function subirOpcionesPartida()
@@ -86,7 +98,6 @@ class GestionController extends BaseController
             $this->partida->insert([
                 'fecha_Inicio' => Time::now('America/Argentina/Ushuaia'),
                 'tiempoLimite' => $tiempoLimite,
-                'intentosRestantes' => $dificultad['cantIntentos'],
                 'tipoCarta' => $tipoCartas,
                 'idUsuario' => $this->session->idUsuario,
                 'idEstadoPartida' => '3',

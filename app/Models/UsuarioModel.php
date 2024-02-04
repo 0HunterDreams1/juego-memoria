@@ -11,7 +11,7 @@ class UsuarioModel extends Model
     protected $returnType = 'array';
     protected $useSoftDeletes = false;
 
-    protected $allowedFields = ['usu_nametag', 'usu_password', 'usu_fecha_nacimiento' , 'usu_correo', 'usu_code_activacion', 'usu_fecha_registro', 'deleted_at', 'usu_estado'];
+    protected $allowedFields = ['usu_nametag', 'usu_password', 'usu_fecha_nacimiento' , 'usu_correo', 'usu_code_activacion', 'usu_fecha_registro', 'deleted_at', 'usu_estado', 'usu_cantidad_partidas'];
 
     protected $useTimestamps = false;
     protected $createdField = 'created_at';
@@ -21,6 +21,11 @@ class UsuarioModel extends Model
     protected $validationRules = [];
     protected $validationMessages = [];
     protected $skipValidation = false;
+
+    public function actualizarCantPartidas($id, $datos){
+        $confirma = $this->update($id, $datos);
+        return $confirma;
+    }
 
     public function buscarUsuario($correo)
     {

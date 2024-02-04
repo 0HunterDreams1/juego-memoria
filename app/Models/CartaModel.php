@@ -26,6 +26,8 @@ class CartaModel extends Model
         $cartas = $this->where('tipoCarta', $tipoCartas)->findAll();
         shuffle($cartas);
         $dividido_cartas = array_slice($cartas, 0, $cantCartas);
-        return $dividido_cartas;
+        $duplicado_cartas = array_merge($dividido_cartas, $dividido_cartas);
+        shuffle($duplicado_cartas);
+        return $duplicado_cartas;
     }
 }
