@@ -4,7 +4,6 @@ btn_nueva_partida.addEventListener("click", ventanaOpcionesPartida, true);
 function ventanaOpcionesPartida() {
   let xhr = new XMLHttpRequest();
   xhr.addEventListener("readystatechange", estadoIdeal);
-
   xhr.open(
     "GET",
     "http://localhost/juego-memoria/GestionController/opcionesPartida",
@@ -13,9 +12,9 @@ function ventanaOpcionesPartida() {
     xhr.send();
     
     function estadoIdeal() {
-    if (xhr.readyState === 4 && xhr.status === 200) {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+      btn_nueva_partida.hidden=true;
       let respuesta = xhr.responseText;
-      
       let contenedor = document.getElementById("contenido");
       contenedor.innerHTML = respuesta;
       const dificultad = document.getElementById("idDificultad");
@@ -79,7 +78,6 @@ function enviarOpcionesPartida(e) {
         </div>`;
       }
       else if(data.msg === "clear"){
-        console.log(data);
         mostrarJuego();
       }
     }
@@ -97,10 +95,54 @@ function mostrarJuego() {
     xhr.send();
 
   function estadoIdeal() {
-      if (xhr.readyState === 4 && xhr.status === 200) {
-          let respuesta = xhr.responseText;
-          let contenedor = document.getElementById('contenido');
-          contenedor.innerHTML = respuesta;
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      let respuesta = xhr.responseText;
+      let contenedor = document.getElementById('contenido');
+      contenedor.innerHTML = respuesta;
+      function setTime() {
+        var totalSegundos=document.getElementById('cantSegundosContador');
+        var seg=parseInt(totalSegundos.innerHTML)+1;
+        totalSegundos.innerHTML=seg;
+        let segundos=document.getElementById("idSegundos");
+        let minutos=document.getElementById("idMinutos");
+        let hora=document.getElementById("idHoras");
+        segundos.innerHTML = pad(seg % 60);
+        if(Number.isInteger(seg / 60)){
+          minutos.innerHTML = pad(parseInt(seg / 60));
+          if('Ilimitado'!=document.getElementById('idTiempoLimite').innerHTML && minutos.innerHTML===document.getElementById('idTiempoLimite').innerHTML.slice(-5,-3)){
+            clearInterval(intervalo);
+            alert('¡Oh no te quedaste sin tiempo!. Suerte para la próxima.');
+            let intentos = document.getElementById('idIntentos').innerHTML;
+            let tiempoEnCurso = hora.innerHTML+":"+minutos.innerHTML+":"+segundos.innerHTML;
+            let url = "http://localhost/juego-memoria/subir-resultados-partida";
+            $.ajax({
+              type: "POST",
+              url: url,
+              data: { intentos: intentos,
+                tiempoEnCurso: tiempoEnCurso,
+                resultado: 'perdio'},
+                success: finalizar
+            })
+          }
+        }
+        if(Number.isInteger(seg/3600)){
+          hora.innerHTML = pad(parseInt(seg/3600));
+        }
       }
+      var intervalo = setInterval(setTime, 1000);
+    }
   }
+}
+
+function pad(val) {
+  var valString = val + "";
+  if (valString.length < 2) {
+    return "0" + valString;
+  } else {
+    return valString;
+  }
+}
+
+function finalizar(){
+  window.location.href = '';
 }

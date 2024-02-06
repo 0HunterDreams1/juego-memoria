@@ -30,16 +30,17 @@ class GestionController extends BaseController
     
     public function index()
     {
-        if (!isset($this->session->idUsuario)) {
-            return redirect()->to(base_url());
-        } else {
+        if (isset($this->session->idUsuario)) {
             $idUsuario = $this->session->idUsuario;
+            $ultimaPartida=$this->partida->buscarUltimaPartida($idUsuario);
             $datos = [
-                'partidaPausada' => $this->partida->buscarPartida($idUsuario,1),
-                'partidaAbandonada' => $this->partida->buscarPartida($idUsuario,2)
+                'ultimaPartida' => $ultimaPartida,
+                'estadoPartida' => $this->estadoPartida->buscarEstadoPartida($ultimaPartida['idEstadoPartida'])
             ];
             echo view('index-cliente', $datos);
-            }
+        } else {
+            return redirect()->to(base_url());
+        }
         
     }
     public function mostrarRegistro()
@@ -100,7 +101,7 @@ class GestionController extends BaseController
                 'tiempoLimite' => $tiempoLimite,
                 'tipoCarta' => $tipoCartas,
                 'idUsuario' => $this->session->idUsuario,
-                'idEstadoPartida' => '3',
+                'idEstadoPartida' => '2',
                 'idDificultad' => $dificultad['idDificultad'],
                 ]);
             $arr = ["code" => "400", "msg" => "clear"];
@@ -108,5 +109,26 @@ class GestionController extends BaseController
         echo json_encode($arr);
         die();
     }
-    
+    public function finalizoJuego(){
+        $intentos = $_POST['intentos'];
+        $resultado = $_POST['resultado'];
+        $tiempoEnCurso = $_POST['tiempoEnCurso'];
+        if ($resultado==='perdio') {
+            $idEstadoPartida='3';
+        }else if($resultado==='gano'){
+            $idEstadoPartida='4';
+        }else{
+            $idEstadoPartida='2';
+        }
+        $idUsuario = $this->session->idUsuario;
+        $partida = $this->partida->buscarUltimaPartida($idUsuario);
+        $datos = [
+            'intentos' => $intentos,
+            'tiempoEnCurso' => $tiempoEnCurso,
+            'fecha_Finalizado' => Time::now('America/Argentina/Ushuaia'),
+            'idEstadoPartida' => $idEstadoPartida,
+        ];
+        $this->partida->update($partida['idPartida'],$datos);
+        die();
+    }
 }

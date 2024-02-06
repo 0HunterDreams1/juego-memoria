@@ -6,6 +6,9 @@
 .imagenGrande{
     transform:scale(1.2);
 }
+.quitaEvento{
+    pointer-events:none;
+}
 .imagenCarta:hover{
     transform:scale(1.2);
 }

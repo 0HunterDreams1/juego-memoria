@@ -64,7 +64,7 @@ $user_session = session();
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-              <?php if(isset($partidaPausada)){?>
+              <?php if(isset($ultimaPartida) AND (isset($estadoPartida) AND $estadoPartida['descripcion'] === 'pausado')){?>
                 <a id="id_nueva_partida" class="collapse-item" href="#" hidden> <i class="fas fa-cog"></i> Nueva partida</a>
                 <a id="id_reanudar_partida" class="collapse-item" href="#"> <i class="fas fa-undo-alt"></i> Reanudar partida </a>
               <?php }else {?>
@@ -124,7 +124,7 @@ $user_session = session();
                 <h6 class="dropdown-header">
                   Alertas
                 </h6>
-                  <?php if(isset($partidaAbandonada)){?>
+                  <?php if(isset($ultimaPartida) AND (isset($estadoPartida) AND $estadoPartida['descripcion'] === 'pausado')){?>
                     <a class="dropdown-item d-flex align-items-center" href="#">
                       <div class="mr-3">
                         <div class="icon-circle bg-warning">
@@ -132,7 +132,7 @@ $user_session = session();
                         </div>
                       </div>
                       <div>
-                        <div class="small text-gray-500">¡Estas en una partida! Buena suerte</div>
+                        <div class="small text-gray-500">¡Tienes una partida pendiente! Presiona Jugar y luego reanudar partida. Buena suerte</div>
                       </div>
                     </a>
                 <?php }else{?>
@@ -151,7 +151,7 @@ $user_session = session();
             </li>
             
             <div class="topbar-divider d-none d-sm-block"></div>
-            
+            <label id="cantSegundosContador" hidden>0</label>
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -186,11 +186,14 @@ $user_session = session();
           <!--------------------------------------mensajes de los modales ---------------------------------------------------->
           
           <div id="notificaciones" class="column text-center" style="background: white;">
-            <?php if (isset($partidaFinalizada)) {?>
+            <?php if (isset($ultimaPartida) AND (isset($estadoPartida) AND $estadoPartida['descripcion'] != 'pausado')) {?>
               <h1 class="my-3">¡Bienvenido <?php echo $user_session->usu_nametag; ?>!</h1>
-              <h2 class="my-3">Tu ultima partida fue el: <?php echo $partidaFinalizada['fecha_Finalizado']; ?></h2>
-              <h2 class="my-3">Los resultados fueron: Usted <?php echo $partidaFinalizada['resultado']; ?></h2>
-              <h3 class="my-3">Difiultad: <?php echo $partidaFinalizada['idDificultad']; ?></h3>
+              <h2 class="my-3">Tu ultima partida fue el: <?php echo $ultimaPartida['fecha_Finalizado']; ?></h2>
+              <h2 class="my-3">El resultado fue: Usted <?php echo $estadoPartida['descripcion']; ?></h2>
+            <?php }else if (isset($estadoPartida) AND (isset($estadoPartida) AND $estadoPartida['descripcion'] === 'pausado')){?>
+              <h1 class="my-3">¡Bienvenido <?php echo $user_session->usu_nametag; ?>!</h1>
+              <h2 class="my-3">Tu ultima partida quedo pendiente desde: <?php echo $ultimaPartida['fecha_Inicio']; ?></h2>
+              <h2 class="my-3">El resultado: Aún no esta concluido</h2>
             <?php }else {?>
               <h1 class="my-3">¡Bienvenido <?php echo $user_session->usu_nametag; ?>!</h1>
               <h2 class="my-3">¡Aún no has jugado una partida!</h2>

@@ -32,6 +32,7 @@ $routes->get('/', 'GestionController::index');
 $routes->get('empezar-juego', 'GestionController::empezarJuego');
 $routes->get('opciones-partida', 'GestionController::opcionesPartida');
 $routes->post('subir-opciones-partida', 'GestionController::subirOpcionesPartida');
+$routes->post('subir-resultados-partida', 'GestionController::finalizoJuego');
 
 
 

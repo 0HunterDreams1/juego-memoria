@@ -21,4 +21,9 @@ class EstadoPartidaModel extends Model
     protected $validationRules = [];
     protected $validationMessages = [];
     protected $skipValidation = false;
+
+    function buscarEstadoPartida($idEstadoPartida){
+        $estadoPartida=$this->where('idEstado', $idEstadoPartida)->first();
+        return $estadoPartida;
+    }
 }
