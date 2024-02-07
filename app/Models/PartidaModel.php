@@ -16,6 +16,7 @@ class PartidaModel extends Model
                                 'tiempoLimite', 
                                 'tiempoEnCurso', 
                                 'intentos',
+                                'aciertos',
                                 'tipoCarta', 
                                 'idUsuario', 
                                 'idEstadoPartida', 

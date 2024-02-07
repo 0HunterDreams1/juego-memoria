@@ -30,4 +30,9 @@ class CartaModel extends Model
         shuffle($duplicado_cartas);
         return $duplicado_cartas;
     }
+    function buscarCartasPorId($idCarta){
+        // error_log($this->where('idCarta', $idCarta)->first()); necesita un string
+        $cartas = $this->where('idCarta', $idCarta)->first();
+        return $cartas;
+    }
 }

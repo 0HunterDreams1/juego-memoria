@@ -11,7 +11,7 @@ class CartaPartidaModel extends Model
     protected $returnType = 'array';
     protected $useSoftDeletes = false;
 
-    protected $allowedFields = ['idPartida', 'idCarta', 'encontrado'];
+    protected $allowedFields = ['idPartida', 'idCarta', 'encontrado', 'indexArray'];
 
     protected $useTimestamps = false;
     protected $createdField = 'created_at';
@@ -21,4 +21,9 @@ class CartaPartidaModel extends Model
     protected $validationRules = [];
     protected $validationMessages = [];
     protected $skipValidation = false;
+
+    function buscarCartas($idPartida){
+        $cartas = $this->where('idPartida', $idPartida)->findAll();
+        return $cartas;
+    }
 }
