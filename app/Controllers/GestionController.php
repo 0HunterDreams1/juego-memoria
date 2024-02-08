@@ -113,6 +113,10 @@ class GestionController extends BaseController
         ];
         $this->usuario->actualizarCantPartidas($idUsuario,$datos);
         /**
+         * Busco las 5 mejores partidas
+         */
+        $mejoresPartidas=$this->partida->buscarTop5($idUsuario);
+        /**
          * Le paso a la vista la informacion necesaria para que funcione la partida
          */
         $datosPartida = ['cartas' => $cartas,
@@ -120,6 +124,7 @@ class GestionController extends BaseController
         'partida' => $partida,
         'cantSegundos' => $cantSegundos,
         'cartasGuardadas' => $cartasGuardadas,
+        'mejoresPartidas' => $mejoresPartidas,
         'cantPartidas' => $cantPartidas];
         echo view('layouts/empezar-juego', $datosPartida);
     }

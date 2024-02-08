@@ -1,7 +1,7 @@
-<div class="container py-4" style="  background: white;">
-    <div class="col-auto">
+<div class="card">
+    <div class="card-header col-sm-12">
       <div class="row align-items-center">
-          <div class="row justify-content-center">
+          <div class="row ml-3 justify-content-center">
               <h5 id="idIntentos" title="Intentos Actuales"><?php echo $partida['intentos'] ?></h5>
               <h5>/</h5>
               <h5 id="idIntentosTotales" title="Intentos Restantes"><?php echo $dificultad['cantIntentos'] ?></h5>
@@ -38,54 +38,60 @@
         <div class="col-sm">
           <h5>Partida N° <?php echo $cantPartidas?></h5>
         </div>
-        <div class="col-sm">
-          <h4>Top 5 mejores tiempos</h4>
-          <p>bla BLA BLA BLA tiempos</p>
-          <p>bla BLA BLA BLA tiempos</p>
-          <p>bla BLA BLA BLA tiempos</p>
-          <p>bla BLA BLA BLA tiempos</p>
-          <p>bla BLA BLA BLA tiempos</p>
-        </div>
       </div>
-      <div class="row">
-      <?php 
-      if($partida['idEstadoPartida']==='1'){
-        foreach ($cartas as $indice => $carta) { 
-          if($cartasGuardadas[$indice]['encontrado']==='1'){?>
-            <div class="card cardTamanio">
-            <img
-            id="<?php echo $indice.'-carta'; ?>" 
-            name="<?php echo $carta['idCarta'];?>"
-            src="<?php echo base_url($carta['nombreCarta']); ?>" 
-            class="card-img-top imagenCarta quitaEvento" 
-            onClick="meHicisteClick('<?php echo $indice.'-carta'; ?>','<?php echo $carta['nombreCarta'];?>')">
+    </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-sm-9">
+        <div class="row">
+        <?php if($partida['idEstadoPartida']==='1'){
+          foreach ($cartas as $indice => $carta) { 
+            if($cartasGuardadas[$indice]['encontrado']==='1'){?>
+              <div class="card cardTamanio">
+              <img
+              id="<?php echo $indice.'-carta'; ?>" 
+              name="<?php echo $carta['idCarta'];?>"
+              src="<?php echo base_url($carta['nombreCarta']); ?>" 
+              class="card-img-top imagenCarta quitaEvento" 
+              onClick="meHicisteClick('<?php echo $indice.'-carta'; ?>','<?php echo $carta['nombreCarta'];?>')">
             </div>
-            <p id="<?php echo $indice;?>" hidden>true</p>
-          <?php }else{?>
-            <div class="card cardTamanio">
-            <img 
-            id="<?php echo $indice.'-carta'; ?>" 
-            name="<?php echo $carta['idCarta'];?>"
-            src="<?php echo base_url('public/images/cartaDetras.JPG'); ?>" 
-            class="card-img-top imagenCarta" 
-            onClick="meHicisteClick('<?php echo $indice.'-carta'; ?>','<?php echo $carta['nombreCarta'];?>')">
-            </div>
-            <p id="<?php echo $indice;?>" hidden>false</p>
-          <?php } ?> 
-        <?php }
-      }else {
-        foreach ($cartas as $indice => $carta) { ?>
-          <div class="card cardTamanio">
+              <p id="<?php echo $indice;?>" hidden>true</p>
+            <?php }else{?>
+              <div class="card cardTamanio">
               <img 
               id="<?php echo $indice.'-carta'; ?>" 
               name="<?php echo $carta['idCarta'];?>"
               src="<?php echo base_url('public/images/cartaDetras.JPG'); ?>" 
               class="card-img-top imagenCarta" 
               onClick="meHicisteClick('<?php echo $indice.'-carta'; ?>','<?php echo $carta['nombreCarta'];?>')">
-          </div>
-          <p id="<?php echo $indice;?>" hidden>false</p>
-        <?php }
-        }?>
+              </div>
+              <p id="<?php echo $indice;?>" hidden>false</p>
+              <?php } ?> 
+          <?php }
+        }else {
+          foreach ($cartas as $indice => $carta) { ?>
+            <div class="card cardTamanio">
+                <img 
+                id="<?php echo $indice.'-carta'; ?>" 
+                name="<?php echo $carta['idCarta'];?>"
+                src="<?php echo base_url('public/images/cartaDetras.JPG'); ?>" 
+                class="card-img-top imagenCarta" 
+                onClick="meHicisteClick('<?php echo $indice.'-carta'; ?>','<?php echo $carta['nombreCarta'];?>')">
+            </div>
+            <p id="<?php echo $indice;?>" hidden>false</p>
+          <?php }}?>
+        </div>
+      </div>
+      <div class="col-sm-3">
+          <h4>Top</h4>
+          <?php if(isset($mejoresPartidas)){
+            foreach ($mejoresPartidas as $i => $mejorPartida) { ?>
+            <p>N° <?php echo (int)$i+1;?> Tiempo Limite: <?php echo $mejorPartida['tiempoLimite'];?> Tiempo: <?php echo $mejorPartida['tiempoEnCurso'];?> N° <?php echo $mejorPartida['intentos'];?></p>
+          <?php }
+          }else { ?>
+            <p>Aún no ganó ninguna partida</p>
+          <?php } ?>
       </div>
     </div>
+  </div>
 </div>

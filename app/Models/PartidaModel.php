@@ -50,4 +50,9 @@ class PartidaModel extends Model
         $partidas = $this->where('idUsuario', $idUsuario)->findAll();
         return $partidas;
     }
+    //SELECT * FROM `partida` WHERE idUsuario='2' AND idEstadoPartida='4' ORDER BY idDificultad DESC, tiempoLimite ASC, tiempoEnCurso ASC LIMIT 5;
+    function buscarTop5($idUsuario){
+        $partidas = $this->where('idUsuario', $idUsuario)->where('idEstadoPartida','4')->orderBy('idDificultad', 'DESC')->orderBy('tiempoLimite', 'ASC')->orderBy('tiempoEnCurso', 'ASC')->limit(5)->find();
+        return $partidas;
+    }
 }
