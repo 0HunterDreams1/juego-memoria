@@ -98,9 +98,10 @@ class GestionController extends BaseController
             /**
              * Busco carta por id y la voy agregando al array
              */
-            foreach ($cartasGuardadas as $index => $cartaGuardada) {
-                $cartas[] = $this->carta->buscarCartasPorId($cartaGuardada['idCarta']);
-            }
+            $cartas=NULL;
+            // foreach ($cartasGuardadas as $index => $cartaGuardada) {
+            //     $cartas[] = $this->carta->buscarCartasPorId($cartaGuardada['idCarta']);
+            // }
         }else{
             $cartasGuardadas = NULL;
             $cartas = $this->carta->buscarCartas($dificultad['cantCartas']/2,$partida['tipoCarta']);

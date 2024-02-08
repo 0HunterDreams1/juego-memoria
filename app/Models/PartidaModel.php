@@ -50,9 +50,15 @@ class PartidaModel extends Model
         $partidas = $this->where('idUsuario', $idUsuario)->findAll();
         return $partidas;
     }
-    //SELECT * FROM `partida` WHERE idUsuario='2' AND idEstadoPartida='4' ORDER BY idDificultad DESC, tiempoLimite ASC, tiempoEnCurso ASC LIMIT 5;
+    //SELECT partida.*, d.nivelDificultad, d.cantIntentos, d.cantCartas FROM partida 
+    //INNER JOIN dificultad as d ON partida.idDificultad=d.idDificultad
+    //WHERE partida.idUsuario='2' AND partida.idEstadoPartida='4' ORDER BY partida.idDificultad DESC, partida.tiempoLimite ASC, partida.tiempoEnCurso ASC LIMIT 5;
     function buscarTop5($idUsuario){
-        $partidas = $this->where('idUsuario', $idUsuario)->where('idEstadoPartida','4')->orderBy('idDificultad', 'DESC')->orderBy('tiempoLimite', 'ASC')->orderBy('tiempoEnCurso', 'ASC')->limit(5)->find();
+        $this->select('partida.*, d.nivelDificultad, d.cantIntentos, d.cantCartas');
+        $this->join('dificultad as d','partida.idDificultad=d.idDificultad');
+        $this->where('idUsuario', $idUsuario)->where('idEstadoPartida','4');
+        $this->orderBy('idDificultad', 'DESC')->orderBy('tiempoLimite', 'ASC')->orderBy('tiempoEnCurso', 'ASC')->limit(5);
+        $partidas=$this->find();
         return $partidas;
     }
 }

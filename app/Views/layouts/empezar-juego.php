@@ -44,53 +44,69 @@
     <div class="row">
       <div class="col-sm-9">
         <div class="row">
-        <?php if($partida['idEstadoPartida']==='1'){
-          foreach ($cartas as $indice => $carta) { 
-            if($cartasGuardadas[$indice]['encontrado']==='1'){?>
-              <div class="card cardTamanio">
-              <img
-              id="<?php echo $indice.'-carta'; ?>" 
-              name="<?php echo $carta['idCarta'];?>"
-              src="<?php echo base_url($carta['nombreCarta']); ?>" 
-              class="card-img-top imagenCarta quitaEvento" 
-              onClick="meHicisteClick('<?php echo $indice.'-carta'; ?>','<?php echo $carta['nombreCarta'];?>')">
-            </div>
-              <p id="<?php echo $indice;?>" hidden>true</p>
-            <?php }else{?>
-              <div class="card cardTamanio">
-              <img 
-              id="<?php echo $indice.'-carta'; ?>" 
-              name="<?php echo $carta['idCarta'];?>"
-              src="<?php echo base_url('public/images/cartaDetras.JPG'); ?>" 
-              class="card-img-top imagenCarta" 
-              onClick="meHicisteClick('<?php echo $indice.'-carta'; ?>','<?php echo $carta['nombreCarta'];?>')">
+          <?php if($partida['idEstadoPartida']==='1'){
+            foreach ($cartasGuardadas as $indice => $cartaGuardada) { 
+              if($cartaGuardada['encontrado']==='1'){?>
+                <div class="card cardTamanio">
+                <img
+                id="<?php echo $indice.'-carta'; ?>" 
+                name="<?php echo $cartaGuardada['idCarta'];?>"
+                src="<?php echo base_url($cartaGuardada['nombreCarta']); ?>" 
+                class="card-img-top imagenCarta quitaEvento" 
+                onClick="meHicisteClick('<?php echo $indice.'-carta'; ?>','<?php echo $cartaGuardada['nombreCarta'];?>')">
               </div>
-              <p id="<?php echo $indice;?>" hidden>false</p>
-              <?php } ?> 
-          <?php }
-        }else {
-          foreach ($cartas as $indice => $carta) { ?>
-            <div class="card cardTamanio">
+                <p id="<?php echo $indice;?>" hidden>true</p>
+              <?php }else{?>
+                <div class="card cardTamanio">
                 <img 
                 id="<?php echo $indice.'-carta'; ?>" 
-                name="<?php echo $carta['idCarta'];?>"
+                name="<?php echo $cartaGuardada['idCarta'];?>"
                 src="<?php echo base_url('public/images/cartaDetras.JPG'); ?>" 
                 class="card-img-top imagenCarta" 
-                onClick="meHicisteClick('<?php echo $indice.'-carta'; ?>','<?php echo $carta['nombreCarta'];?>')">
-            </div>
-            <p id="<?php echo $indice;?>" hidden>false</p>
-          <?php }}?>
+                onClick="meHicisteClick('<?php echo $indice.'-carta'; ?>','<?php echo $cartaGuardada['nombreCarta'];?>')">
+                </div>
+                <p id="<?php echo $indice;?>" hidden>false</p>
+                <?php } ?> 
+            <?php }
+          }else {
+            foreach ($cartas as $indice => $carta) { ?>
+              <div class="card cardTamanio">
+                  <img 
+                  id="<?php echo $indice.'-carta'; ?>" 
+                  name="<?php echo $carta['idCarta'];?>"
+                  src="<?php echo base_url('public/images/cartaDetras.JPG'); ?>" 
+                  class="card-img-top imagenCarta" 
+                  onClick="meHicisteClick('<?php echo $indice.'-carta'; ?>','<?php echo $carta['nombreCarta'];?>')">
+              </div>
+              <p id="<?php echo $indice;?>" hidden>false</p>
+            <?php }}?>
         </div>
       </div>
       <div class="col-sm-3">
-          <h4>Top</h4>
-          <?php if(isset($mejoresPartidas)){
-            foreach ($mejoresPartidas as $i => $mejorPartida) { ?>
-            <p>N° <?php echo (int)$i+1;?> Tiempo Limite: <?php echo $mejorPartida['tiempoLimite'];?> Tiempo: <?php echo $mejorPartida['tiempoEnCurso'];?> N° <?php echo $mejorPartida['intentos'];?></p>
-          <?php }
-          }else { ?>
-            <p>Aún no ganó ninguna partida</p>
-          <?php } ?>
+        <table class="table table-info table-sm" style="text-align:center">
+          <thead>
+            <tr>
+              <td colspan="4">TOP 5</td>
+            </tr>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Finalizado</th>
+              <th scope="col">Tiempo</th>
+              <th scope="col">Dificultad</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php if(isset($mejoresPartidas)){
+              foreach ($mejoresPartidas as $i => $mejorPartida) { ?>
+              <tr>
+                <th scope="row"><?php echo (int)$i+1;?></th>
+                <td><?php echo $mejorPartida['fecha_Finalizado'];?></td>
+                <td><?php echo $mejorPartida['tiempoEnCurso'];?></td>
+                <td><?php echo $mejorPartida['nivelDificultad'];?></td>
+              </tr>
+            <?php }} ?>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>

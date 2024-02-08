@@ -27,19 +27,8 @@ function mostrarJuego() {
             if('Ilimitado'!=document.getElementById('idTiempoLimite').innerHTML && minutos.innerHTML===document.getElementById('idTiempoLimite').innerHTML.slice(-5,-3)){
               clearInterval(intervalo);
               alert('¡Oh no te quedaste sin tiempo!. Suerte para la próxima.');
-              let intentos = document.getElementById('idIntentos').innerHTML;
-              let aciertos=document.getElementById("idAciertos");
-              let tiempoEnCurso = hora.innerHTML+":"+minutos.innerHTML+":"+segundos.innerHTML;
-              let url = "http://localhost/juego-memoria/subir-resultados-partida";
-              $.ajax({
-                type: "POST",
-                url: url,
-                data: { intentos: intentos,
-                  tiempoEnCurso: tiempoEnCurso,
-                  aciertos: aciertos.value,
-                  resultado: 'perdio'},
-                  success: finalizar
-              })
+              let resultado='perdio';
+              enviarDatosPartida(resultado);
             }
           }
           if(Number.isInteger(seg/3600)){
@@ -50,6 +39,7 @@ function mostrarJuego() {
       }
     }
   }
+
   
   function pad(val) {
     var valString = val + "";
@@ -59,142 +49,105 @@ function mostrarJuego() {
       return valString;
     }
   }
-  
-  function finalizar(){
-    window.location.href = '';
+function rendirse(){
+  if (confirm('¿Seguro que desea rendirse?')){
+    let resultado= 'abandono';
+    enviarDatosPartida(resultado);
   }
-  function rendirse(){
-    if (confirm('¿Seguro que desea rendirse?')){
-      let segundos=document.getElementById("idSegundos");
-      let aciertos=document.getElementById("idAciertos");
-      let minutos=document.getElementById("idMinutos");
-      let hora=document.getElementById("idHoras");
-      let intentos = document.getElementById('idIntentos').innerHTML;
-      let tiempoEnCurso = hora.innerHTML+":"+minutos.innerHTML+":"+segundos.innerHTML;
-      let url = "http://localhost/juego-memoria/subir-resultados-partida";
-      $.ajax({
-        type: "POST",
-        url: url,
-        data: { intentos: intentos,
-          tiempoEnCurso: tiempoEnCurso,
-          aciertos: aciertos.value,
-          resultado: 'abandono'},
-          success: finalizar
-      })
-    }
-  }
+}
+
 function meHicisteClick(idImage, nameCarta){
-    let imagen=document.getElementById(idImage);
-    let contador=document.getElementById("idContador");
-    let aciertos=document.getElementById("idAciertos");
-    let idImagenAux=document.getElementById("idImagenAux");
-    let idMaxAciertos=document.getElementById('idMaxAciertos').value;
-    imagen.classList.add('imagenGrande');
-    imagen.classList.add('quitaEvento');
-    imagen.src="http://localhost/juego-memoria/"+nameCarta;
-    if(contador.value==='0'){
-        contador.value=parseInt(contador.value)+1;
-        idImagenAux.value=idImage;
+  let imagen=document.getElementById(idImage);
+  let contador=document.getElementById("idContador");
+  let aciertos=document.getElementById("idAciertos");
+  let idImagenAux=document.getElementById("idImagenAux");
+  let idMaxAciertos=document.getElementById('idMaxAciertos').value;
+  imagen.classList.add('imagenGrande');
+  imagen.classList.add('quitaEvento');
+  imagen.src="http://localhost/juego-memoria/"+nameCarta;
+  if(contador.value==='0'){
+      contador.value=parseInt(contador.value)+1;
+      idImagenAux.value=idImage;
+  }else{
+    contador.value=0;
+    let imagenAux=document.getElementById(idImagenAux.value);
+    if(imagenAux.name===imagen.name){
+      aciertos.value=parseInt(aciertos.value)+1;
+      document.getElementById(parseInt(idImage)).innerHTML="true";
+      document.getElementById(parseInt(idImagenAux.value)).innerHTML="true";
+      imagen.classList.remove('imagenGrande');
+      imagenAux.classList.remove('imagenGrande');
     }else{
-        contador.value=0;
-        let imagenAux=document.getElementById(idImagenAux.value);
-        if(imagenAux.name===imagen.name){
-            aciertos.value=parseInt(aciertos.value)+1;
-            document.getElementById(parseInt(idImage)).innerHTML="true";
-            document.getElementById(parseInt(idImagenAux.value)).innerHTML="true";
-            imagen.classList.remove('imagenGrande');
-            imagenAux.classList.remove('imagenGrande');
+      setTimeout(() => {
+        let intentos=document.getElementById("idIntentos");
+        intentos.innerHTML=parseInt(intentos.innerHTML)+1;
+        imagen.src="http://localhost/juego-memoria/public/images/cartaDetras.JPG";
+        imagenAux.src="http://localhost/juego-memoria/public/images/cartaDetras.JPG";
+        imagen.classList.remove('imagenGrande');
+        imagen.classList.remove('quitaEvento');
+        imagenAux.classList.remove('imagenGrande');
+        imagenAux.classList.remove('quitaEvento');
+      }, 500);
+    }
+            
+  }
+  if(aciertos.value===idMaxAciertos){
+    alert('¡¡¡EXCELENTE MEMORIA!!!');
+    let resultado='gano';
+    enviarDatosPartida(resultado); 
+  }
+  if (document.getElementById("idIntentos").innerHTML===document.getElementById("idIntentosTotales").innerHTML) {
+    if(aciertos.value >= (idMaxAciertos*0.80)){
+        alert('¡¡¡MUY BUENA MEMORIA!!!');
+    }else if(aciertos.value >= (idMaxAciertos*0.60)){
+      alert('¡¡¡BUENA MEMORIA!!!¡¡¡¡Puedes mejorar!!!!');
+    }else{
+      alert('¡¡¡Mala Memoria, debes practicar más!!!');
+    }
+    let resultado='perdio';
+    enviarDatosPartida(resultado);    
+  }
+}
 
-        }else{
-            setTimeout(() => {
-                let intentos=document.getElementById("idIntentos");
-                intentos.innerHTML=parseInt(intentos.innerHTML)+1;
-                imagen.src="http://localhost/juego-memoria/public/images/cartaDetras.JPG";
-                imagenAux.src="http://localhost/juego-memoria/public/images/cartaDetras.JPG";
-                imagen.classList.remove('imagenGrande');
-                imagen.classList.remove('quitaEvento');
-                imagenAux.classList.remove('imagenGrande');
-                imagenAux.classList.remove('quitaEvento');
-              }, 500);
-        }
-
+function guardar(){
+  if (confirm('¿Seguro que desea guardar la partida, para retomarla luego?')){
+    let resultado = 'guardar';
+    enviarDatosPartida(resultado);
     }
-    if(aciertos.value===idMaxAciertos){
-        alert('¡¡¡EXCELENTE MEMORIA!!!');
-        let segundos=document.getElementById("idSegundos");
-        let minutos=document.getElementById("idMinutos");
-        let hora=document.getElementById("idHoras");
-        let intentos = document.getElementById('idIntentos').innerHTML;
-        let tiempoEnCurso = hora.innerHTML+":"+minutos.innerHTML+":"+segundos.innerHTML;
-        let url = "http://localhost/juego-memoria/subir-resultados-partida";
-        $.ajax({
-          type: "POST",
-          url: url,
-          data: { intentos: intentos,
-                tiempoEnCurso: tiempoEnCurso,
-                aciertos: aciertos.value,
-                resultado: 'gano'},
-                success: finalizar
-        })
+  }
+  
+function enviarDatosPartida(resul){
+  let posiciones = [];
+  if (resul==='guardar') {
+    let cartas=document.querySelectorAll("[id*='-carta']");
+    let idCarta;
+    let encontrado;
+    for (let index = 0; index < cartas.length; index++) {
+      idCarta= document.getElementById(index+'-carta').name;
+      encontrado=document.getElementById(index).innerHTML;
+      posiciones.push({ "idCarta" : idCarta, "encontrado": encontrado})
     }
-    if (document.getElementById("idIntentos").innerHTML===document.getElementById("idIntentosTotales").innerHTML) {
-        if(aciertos.value >= (idMaxAciertos*0.80)){
-            alert('¡¡¡MUY BUENA MEMORIA!!!');
-        }else if(aciertos.value >= (idMaxAciertos*0.60)){
-            alert('¡¡¡BUENA MEMORIA!!!¡¡¡¡Puedes mejorar!!!!');
-        }else{
-            alert('¡¡¡Mala Memoria, debes practicar más!!!');
-        }
-        let segundos=document.getElementById("idSegundos");
-        let minutos=document.getElementById("idMinutos");
-        let hora=document.getElementById("idHoras");
-        let intentos = document.getElementById('idIntentos').innerHTML;
-        let tiempoEnCurso = hora.innerHTML+":"+minutos.innerHTML+":"+segundos.innerHTML;
-        let url = "http://localhost/juego-memoria/subir-resultados-partida";
-        $.ajax({
-            type: "POST",
-            url: url,
-          data: { intentos: intentos,
-            tiempoEnCurso: tiempoEnCurso,
-            aciertos: aciertos.value,
-            resultado: 'perdio'},
-            success: finalizar
-        })
-    }
+  }
+  let idPartida = document.getElementById('idPartida').value;
+  let segundos=document.getElementById("idSegundos");
+  let minutos=document.getElementById("idMinutos");
+  let hora=document.getElementById("idHoras");
+  let intentos = document.getElementById('idIntentos').innerHTML;
+  let aciertos=document.getElementById("idAciertos");
+  let tiempoEnCurso = hora.innerHTML+":"+minutos.innerHTML+":"+segundos.innerHTML;
+  let url = "http://localhost/juego-memoria/subir-resultados-partida";
+  $.ajax({
+    type: "POST",
+    url: url,
+    data: { intentos: intentos,
+      tiempoEnCurso: tiempoEnCurso,
+      aciertos: aciertos.value,
+      idPartida: idPartida,
+      'posiciones': JSON.stringify(posiciones),
+      resultado: resul},
+      success: finalizar
+  })
 }
 function finalizar(){
-    window.location.href = '';
-}
-function guardar(){
-    if (confirm('¿Seguro que desea guardar la partida, para retomarla luego?')){
-        let segundos=document.getElementById("idSegundos");
-        let minutos=document.getElementById("idMinutos");
-        let hora=document.getElementById("idHoras");
-        let intentos = document.getElementById('idIntentos').innerHTML;
-        let tiempoEnCurso = hora.innerHTML+":"+minutos.innerHTML+":"+segundos.innerHTML;
-        let cartas=document.querySelectorAll("[id*='-carta']");
-        let idCarta;
-        let encontrado;
-        let idPartida = document.getElementById('idPartida').value;
-        let aciertos=document.getElementById("idAciertos");
-        let posiciones = [];
-        for (let index = 0; index < cartas.length; index++) {
-            idCarta= document.getElementById(index+'-carta').name;
-            encontrado=document.getElementById(index).innerHTML;
-            posiciones.push({ "idCarta" : idCarta, "encontrado": encontrado})
-        }
-        console.log(posiciones);
-        let url = "http://localhost/juego-memoria/subir-resultados-partida";
-        $.ajax({
-            type: "POST",
-            url: url,
-            data: { intentos: intentos,
-                  tiempoEnCurso: tiempoEnCurso,
-                  aciertos: aciertos.value,
-                  idPartida: idPartida,
-                  'posiciones': JSON.stringify(posiciones),
-                  resultado: 'guardar'},
-                success: finalizar
-        })
-    }
+  window.location.href = '';
 }

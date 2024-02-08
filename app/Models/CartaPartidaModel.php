@@ -21,9 +21,15 @@ class CartaPartidaModel extends Model
     protected $validationRules = [];
     protected $validationMessages = [];
     protected $skipValidation = false;
-
+    
+    //SELECT cartapartida.*, c.tipoCarta, c.nombreCarta FROM cartapartida
+    //INNER JOIN carta as c ON cartapartida.idCarta=c.idCarta
+    //WHERE cartapartida.idPartida=11;
     function buscarCartas($idPartida){
-        $cartas = $this->where('idPartida', $idPartida)->findAll();
+        $this->select('cartapartida.*, c.tipoCarta, c.nombreCarta');
+        $this->join('carta as c','cartapartida.idCarta=c.idCarta');
+        $this->where('idPartida', $idPartida);
+        $cartas = $this->findAll();
         return $cartas;
     }
 }
