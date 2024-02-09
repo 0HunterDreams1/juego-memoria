@@ -52,11 +52,6 @@ $user_session = session();
           </div>
         </div>
       </li>
-      <li class="nav-item active">
-        <a id="id_historial" class="nav-link" href="#">
-        <i class="fas fa-history"></i>
-          <span>Historial partidas</span></a>
-      </li>
       <hr class="sidebar-divider d-none d-md-block">
       <div class="text-center d-none d-md-inline">
         <button class="rounded-circle border-0" id="sidebarToggle"></button>
@@ -162,7 +157,7 @@ $user_session = session();
   <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
   </a>
-  
+
   <script src="<?php echo base_url('vendor/jquery/jquery.min.js') ?>"></script>
   <script src="<?php echo base_url('vendor/bootstrap/js/bootstrap.bundle.min.js') ?>"></script>
 

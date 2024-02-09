@@ -38,7 +38,7 @@
               <br>
               <form class="user" method="POST" action="<?php echo base_url(); ?>UsuarioController/registrarUsuario">
                 <div class="input-group mb-3">
-                  <input type="text" class="form-control form-control-user" id="usu_nametag" name="usu_nametag" placeholder="Nametag" autofocus value ="<?php if(isset($usu_nametag)){ echo $usu_nametag; } ?>" required>
+                  <input type="text" class="form-control form-control-user" id="usu_nametag" name="usu_nametag" placeholder="Nombre de usuario" autofocus value ="<?php if(isset($usu_nametag)){ echo $usu_nametag; } ?>" required>
                   <input type="email" class="form-control form-control-user" id="usu_correo" name="usu_correo"placeholder="Correo electrónico" value ="<?php if(isset($usu_correo)){ echo $usu_correo; } ?>" required>
                 </div>  
                 <div class="input-group mb-3">

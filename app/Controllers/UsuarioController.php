@@ -100,7 +100,7 @@ class UsuarioController extends BaseController
                                
             ]);
 
-            $usu = $this->usuario->buscarUsuario($this->request->getPost('usu_correo'));
+            $usu = $this->usuario->buscarUsuario($this->request->getPost('usu_nametag'));
             $idUsuario = $usu['idUsuario'];
 
             $datosSesion = [
