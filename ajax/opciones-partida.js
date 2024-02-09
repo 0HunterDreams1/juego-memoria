@@ -6,7 +6,7 @@ function ventanaOpcionesPartida() {
   xhr.addEventListener("readystatechange", estadoIdeal);
   xhr.open(
     "GET",
-    "http://localhost/juego-memoria/GestionController/opcionesPartida",
+    "http://localhost/juego-memoria/PartidaController/opcionesPartida",
     true
     );
     xhr.send();

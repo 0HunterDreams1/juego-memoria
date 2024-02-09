@@ -4,7 +4,7 @@ function mostrarJuego() {
   
     xhr.open(
       "GET",
-      "http://localhost/juego-memoria/GestionController/empezarJuego",
+      "http://localhost/juego-memoria/PartidaController/empezarJuego",
       true
       );
       xhr.send();

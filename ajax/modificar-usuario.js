@@ -5,7 +5,7 @@ function mostrar(e) {
     let xhr = new XMLHttpRequest();
     xhr.addEventListener("readystatechange", estadoIdeal);
 
-    xhr.open('GET', 'http://localhost/renta-bike/GestionController/modificarUsuario', true);
+    xhr.open('GET', 'http://localhost/renta-bike/PartidaController/modificarUsuario', true);
     xhr.send();
 
     function estadoIdeal() {

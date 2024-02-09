@@ -29,10 +29,10 @@ $routes->setAutoRoute(true);
 // route since we don't have to scan directories.
 $routes->get('/', 'LoginController::index');
 $routes->get('/', 'GestionController::index');
-$routes->get('empezar-juego', 'GestionController::empezarJuego');
-$routes->get('opciones-partida', 'GestionController::opcionesPartida');
-$routes->post('subir-opciones-partida', 'GestionController::subirOpcionesPartida');
-$routes->post('subir-resultados-partida', 'GestionController::finalizoJuego');
+$routes->get('empezar-juego', 'PartidaController::empezarJuego');
+$routes->get('opciones-partida', 'PartidaController::opcionesPartida');
+$routes->post('subir-opciones-partida', 'PartidaController::subirOpcionesPartida');
+$routes->post('subir-resultados-partida', 'PartidaController::finalizoJuego');
 
 
 
