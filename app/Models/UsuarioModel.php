@@ -27,9 +27,9 @@ class UsuarioModel extends Model
         return $confirma;
     }
 
-    public function buscarUsuario($correo)
+    public function buscarUsuario($nametag)
     {
-        $this->where('usu_correo', $correo);
+        $this->where('usu_nametag', $nametag);
         $datosUsuario = $this->first();
         return $datosUsuario;
     }

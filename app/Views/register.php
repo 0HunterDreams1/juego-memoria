@@ -35,30 +35,21 @@
               <div class="text-center">
                 <h1 class="h4 text-gray-900 mb-4">¡Crear una cuenta!</h1>
               </div>
+              <br>
               <form class="user" method="POST" action="<?php echo base_url(); ?>UsuarioController/registrarUsuario">
-                <div class="form-group row">
-                  <div class="col-sm-6 mb-3 mb-sm-0">
-                    <input type="text" class="form-control form-control-user" id="usu_nametag" name="usu_nametag" placeholder="Nametag" autofocus value ="<?php if(isset($usu_nametag)){ echo $usu_nametag; } ?>" required>
-                  </div>
-                  <div class="col-sm-6 mb-3 mb-sm-0">
-                    <input type="date" class="form-control form-control-user" id="usu_fecha" name="usu_fecha" placeholder="Fecha de nacimiento" value ="<?php if(isset($usu_fecha)){ echo $usu_fecha; } ?>" required>
-                  </div>
-                </div>
-                <div class="form-group">
+                <div class="input-group mb-3">
+                  <input type="text" class="form-control form-control-user" id="usu_nametag" name="usu_nametag" placeholder="Nametag" autofocus value ="<?php if(isset($usu_nametag)){ echo $usu_nametag; } ?>" required>
                   <input type="email" class="form-control form-control-user" id="usu_correo" name="usu_correo"placeholder="Correo electrónico" value ="<?php if(isset($usu_correo)){ echo $usu_correo; } ?>" required>
+                </div>  
+                <div class="input-group mb-3">
+                  <span class="input-group-text form-control form-control-user" id="basic-addon3">Fecha de nacimiento</span>
+                  <input type="date" class="form-control form-control-user" id="usu_fecha" name="usu_fecha" value ="<?php if(isset($usu_fecha)){ echo $usu_fecha; } ?>" required>
                 </div>
-                <div class="form-group row">
-                  <div class="col-sm-6 mb-3 mb-sm-0">
-                    <input type="password" class="form-control form-control-user" id="usu_password" name="usu_password" placeholder="Contraseña" value ="<?php if(isset($usu_password)){ echo $usu_password; } ?>" required>
-                  </div>
-                  <div class="col-sm-6">
-                    <input type="password" class="form-control form-control-user" id="r_usu_password" name="r_usu_password" placeholder="Repetir contraseña" required>
-                  </div>
+                <div class="input-group mb-3">
+                  <input type="password" class="form-control form-control-user" id="usu_password" name="usu_password" placeholder="Contraseña" value ="<?php if(isset($usu_password)){ echo $usu_password; } ?>" required>
+                  <input type="password" class="form-control form-control-user" id="r_usu_password" name="r_usu_password" placeholder="Repetir contraseña" required>
                 </div>
                 <button class="btn btn-primary btn-user btn-block" type="submit">Registrarse</button>
-                </a>
-                <hr>
-
               </form>
               <?php if (isset($validation)) { ?>
                       <div class="alert alert-danger">

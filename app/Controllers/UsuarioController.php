@@ -45,80 +45,32 @@ class UsuarioController extends BaseController
                 ],
             ],
         ];
-        $this->reglasModificar = [
-            'r_usu_password' => [
-                'rules' => 'matches[usu_password]',
-                'errors' => [
-                    'matches' => 'Las contraseñas no coinciden',
-                ],
-            ],
-            'usu_password' => [
-                'rules' => 'min_length[8]',
-                'errors' => [
-                    'min_length' => 'La contraseña tiene que tener como minimo 8 caracteres',
-                ],
-            ]
-        ];
     }
     public function ingresarAlSistema()
     {
         if ($this->request->getMethod() == "post") {
 
-            $usu_correo = $this->request->getPost('usu_correo');
+            $usu_nametag = $this->request->getPost('usu_nametag');
             $usu_password = $this->request->getPost('usu_password');
-            $usu = $this->usuario->buscarUsuario($usu_correo);
+            $usu = $this->usuario->buscarUsuario($usu_nametag);
 
             if ($usu != null) {
-
                 if (base64_decode($usu['usu_password']) == $usu_password) {
-
-                    if ($usu['deleted_at'] != null) {
-                        $modal = '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                        Esta cuenta se encuentra desactivada. Haz clic aquí para reactivarla </button>
-                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                        <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Reactivar cuenta</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
-                        </div>
-                        <form method="POST" class="user"
-                        action="' . base_url() . 'UsuarioController/reactivarCuenta">
-                        <div class="modal-body">
-                         ¿Está seguro de que quiere reactivar su cuenta?
-                        </div>
-
-                        <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Confirmar</button>
-                        </div>
-                        </div>
-                        <input type="hidden" name="ocultoUsuario" value="' . $usu['idUsuario'] . '">
-                        </form>
-                        </div>
-                        </div>';
-                        $dato = ['modal' => $modal];
-                        echo view('login', $dato);
-
-                    } else {
-
-                        $datosSesion = [
+                    $datosSesion = [
                             'idUsuario' => $usu['idUsuario'],
                             'usu_nametag' => $usu['usu_nametag'],
                             'usu_correo' => $usu['usu_correo'],
                             'usu_estado' => $usu['usu_estado']
                         ];
-                        $sesion = session();
-                        $sesion->set($datosSesion);
-                        return redirect()->to(base_url() . 'GestionController/index');
-                    }
+                    $sesion = session();
+                    $sesion->set($datosSesion);
+                    return redirect()->to(base_url() . 'GestionController/index');
                 } else {
                     $data['error'] = 'La contraseña no coincide';
                     echo view('login', $data);
                 }
             } else {
-                $data['error'] = 'El cliente no existe';
+                $data['error'] = 'El usuario no existe';
                 echo view('login', $data);
             }
         } else {

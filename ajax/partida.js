@@ -62,6 +62,8 @@ function meHicisteClick(idImage, nameCarta){
   let aciertos=document.getElementById("idAciertos");
   let idImagenAux=document.getElementById("idImagenAux");
   let idMaxAciertos=document.getElementById('idMaxAciertos').value;
+  console.log(document.getElementById(parseInt(idImage)).innerHTML);
+  console.log(new Boolean("False"));
   imagen.classList.add('imagenGrande');
   imagen.classList.add('quitaEvento');
   imagen.src="http://localhost/juego-memoria/"+nameCarta;
@@ -92,18 +94,24 @@ function meHicisteClick(idImage, nameCarta){
             
   }
   if(aciertos.value===idMaxAciertos){
-    alert('¡¡¡EXCELENTE MEMORIA!!!');
+    alert('GANASTE'
+    +'\n¡¡¡EXCELENTE MEMORIA!!!'
+    +'\nTu tiempo: '+document.getElementById("idHoras").innerHTML+':'+document.getElementById("idMinutos").innerHTML+':'+document.getElementById("idSegundos").innerHTML);
     let resultado='gano';
     enviarDatosPartida(resultado); 
   }
   if (document.getElementById("idIntentos").innerHTML===document.getElementById("idIntentosTotales").innerHTML) {
+    let mensaje='';
     if(aciertos.value >= (idMaxAciertos*0.80)){
-        alert('¡¡¡MUY BUENA MEMORIA!!!');
+      mensaje='¡¡¡MUY BUENA MEMORIA!!!'
     }else if(aciertos.value >= (idMaxAciertos*0.60)){
-      alert('¡¡¡BUENA MEMORIA!!!¡¡¡¡Puedes mejorar!!!!');
+      mensaje='¡¡¡BUENA MEMORIA!!!¡¡¡¡Puedes mejorar!!!!';
     }else{
-      alert('¡¡¡Mala Memoria, debes practicar más!!!');
+      mensaje="¡¡¡Mala Memoria, debes practicar más!!!";
     }
+    alert('PERDISTE'
+      +'\n'+mensaje+
+      +'\nTu tiempo: '+document.getElementById("idHoras").innerHTML+':'+document.getElementById("idMinutos").innerHTML+':'+document.getElementById("idSegundos").innerHTML); 
     let resultado='perdio';
     enviarDatosPartida(resultado);    
   }
@@ -123,10 +131,12 @@ function enviarDatosPartida(resul){
     let idCarta;
     let encontrado;
     for (let index = 0; index < cartas.length; index++) {
-      idCarta= document.getElementById(index+'-carta').name;
-      encontrado=document.getElementById(index).innerHTML;
+      idCarta= parseInt(document.getElementById(index+'-carta').name);
+      encontrado="true"===document.getElementById(index).innerHTML;
+      console.log(encontrado);
       posiciones.push({ "idCarta" : idCarta, "encontrado": encontrado})
     }
+    console.log(posiciones);
   }
   let idPartida = document.getElementById('idPartida').value;
   let segundos=document.getElementById("idSegundos");

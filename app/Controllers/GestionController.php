@@ -51,15 +51,6 @@ class GestionController extends BaseController
     {
         echo view('register');
     }
-    public function modificarUsuario()
-    {
-        $datos = ['usuario' => $this->usuario->buscarUsuario($this->session->correo)];
-        echo view('layouts/modificar-usuario', $datos);
-    }
-    public function bajaUsuario()
-    {
-        echo view('layouts/baja-usuario');
-    }
     public function opcionesPartida()
     {
         echo view('layouts/opciones-partida');
@@ -173,13 +164,14 @@ class GestionController extends BaseController
             $idEstadoPartida='1';
             if (!empty($_POST['posiciones'])) {
                 $jsonString = $_POST['posiciones'];
+                error_log($jsonString);
                 $items = json_decode($jsonString, TRUE);
                 $cartasGuardadas = $this->cartaPartida->buscarCartas($idPartida);
                 if($cartasGuardadas != NULL){
                     foreach ($items as $index => $item) {
                         $dataCartas=['idPartida' => $idPartida,
-                        'idCarta' => (int)$item['idCarta'],
-                        'encontrado' => ($item['encontrado'] == "true") ? 1 : 0,
+                        'idCarta' => $item['idCarta'],
+                        'encontrado' => $item['encontrado'],
                         'indexArray' => $index];
                         $this->cartaPartida->update($cartasGuardadas[$index]['idCartaPartida'],$dataCartas);
                     }
@@ -187,8 +179,8 @@ class GestionController extends BaseController
                     foreach ($items as $index => $item) {
                         $this->cartaPartida->insert([
                             'idPartida' => $idPartida,
-                            'idCarta' => (int)$item['idCarta'],
-                            'encontrado' => ($item['encontrado'] == "true") ? 1 : 0,
+                            'idCarta' => $item['idCarta'],
+                            'encontrado' => $item['encontrado'],
                             'indexArray' => $index
                         ]);
                     }

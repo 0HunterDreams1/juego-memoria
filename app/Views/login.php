@@ -47,27 +47,6 @@
                        echo '</div>';
                       
                     } ?>
-                    <?php if (isset($cuenta)){
-                       echo '<div class= "alert alert-success">';
-                       echo $cuenta;
-                       echo '</div>';
-                      
-                    } ?>
-                    <?php if (isset($_GET['exit'])){
-                      echo '<div class= "alert alert-success">';
-                      echo 'Te has dado de baja correctamente';
-                      echo '</div>';
-                    } ?>
-                     <?php if (isset($_GET['cambios'])){
-                      echo '<div class= "alert alert-success">';
-                      echo 'Se modificaron los datos correctamente. Vuelva a iniciar sesión por favor';
-                      echo '</div>';
-                    } ?>
-                    <?php if (isset($_GET['estaSuspendido'])){
-                      echo '<div class= "alert alert-danger">';
-                      echo 'Usted está suspendido. Vuelva a iniciar sesión por favor';
-                      echo '</div>';
-                    } ?>
                     <br>
                   </div>
                   </div>
@@ -75,7 +54,7 @@
                   <form class="user" method="POST" action="<?php echo base_url(); ?>UsuarioController/ingresarAlSistema">
 
                     <div class="form-group">
-                      <input type="text" class="form-control form-control-user" id="usu_correo" name="usu_correo" aria-describedby="emailHelp"  autofocus placeholder="Ingrese un correo..." required>
+                      <input type="text" class="form-control form-control-user" id="usu_nametag" name="usu_nametag" autofocus placeholder="Ingrese su nombre de usuario..." required>
                     
                     </div>
                     <div class="form-group">
@@ -107,7 +86,7 @@
                   <hr>
                   <div class="text-center">
 
-                    <a class="medium" download="Manual_Juego_Memoria.pdf" href="<?php echo base_url('/download/Manual_Juego_Memoria.pdf')?>">
+                    <a class="medium" download="Manual_de_Usuario.pdf" href="<?php echo base_url('/download/Manual_de_Usuario.pdf')?>">
                     <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
                     <span>Descargar manual de usuario</span></a>
                     

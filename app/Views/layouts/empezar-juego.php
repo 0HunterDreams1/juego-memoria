@@ -47,22 +47,22 @@
           <?php if($partida['idEstadoPartida']==='1'){
             foreach ($cartasGuardadas as $indice => $cartaGuardada) { 
               if($cartaGuardada['encontrado']==='1'){?>
-                <div class="card cardTamanio">
+                <div class="card cardTamanio<?php echo $dificultad['cantCartas']; ?>">
                 <img
                 id="<?php echo $indice.'-carta'; ?>" 
                 name="<?php echo $cartaGuardada['idCarta'];?>"
                 src="<?php echo base_url($cartaGuardada['nombreCarta']); ?>" 
-                class="card-img-top imagenCarta quitaEvento" 
+                class="card-img-top quitaEvento imgTamanio<?php echo $dificultad['cantCartas']; ?>" 
                 onClick="meHicisteClick('<?php echo $indice.'-carta'; ?>','<?php echo $cartaGuardada['nombreCarta'];?>')">
               </div>
                 <p id="<?php echo $indice;?>" hidden>true</p>
               <?php }else{?>
-                <div class="card cardTamanio">
+                <div class="card cardTamanio<?php echo $dificultad['cantCartas']; ?>">
                 <img 
                 id="<?php echo $indice.'-carta'; ?>" 
                 name="<?php echo $cartaGuardada['idCarta'];?>"
                 src="<?php echo base_url('public/images/cartaDetras.JPG'); ?>" 
-                class="card-img-top imagenCarta" 
+                class="card-img-top imgTamanio<?php echo $dificultad['cantCartas']; ?>" 
                 onClick="meHicisteClick('<?php echo $indice.'-carta'; ?>','<?php echo $cartaGuardada['nombreCarta'];?>')">
                 </div>
                 <p id="<?php echo $indice;?>" hidden>false</p>
@@ -70,12 +70,12 @@
             <?php }
           }else {
             foreach ($cartas as $indice => $carta) { ?>
-              <div class="card cardTamanio">
+              <div class="card cardTamanio<?php echo $dificultad['cantCartas']; ?>">
                   <img 
                   id="<?php echo $indice.'-carta'; ?>" 
                   name="<?php echo $carta['idCarta'];?>"
                   src="<?php echo base_url('public/images/cartaDetras.JPG'); ?>" 
-                  class="card-img-top imagenCarta" 
+                  class="card-img-top imgTamanio<?php echo $dificultad['cantCartas']; ?>" 
                   onClick="meHicisteClick('<?php echo $indice.'-carta'; ?>','<?php echo $carta['nombreCarta'];?>')">
               </div>
               <p id="<?php echo $indice;?>" hidden>false</p>
@@ -83,7 +83,7 @@
         </div>
       </div>
       <div class="col-sm-3">
-        <table class="table table-info table-sm" style="text-align:center">
+        <table class="table table-info table-striped table-sm" style="text-align:center">
           <thead>
             <tr>
               <td colspan="4">TOP 5</td>

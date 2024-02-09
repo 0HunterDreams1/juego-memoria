@@ -1,6 +1,4 @@
-.imagenCarta{
-    width:195px;
-    height:240px;
+.row img{
     background-size: cover;
 }
 .imagenGrande{
@@ -9,11 +7,33 @@
 .quitaEvento{
     pointer-events:none;
 }
-.imagenCarta:hover{
+.row img:hover{
     transform:scale(1.2);
 }
-.cardTamanio{
+.cardTamanio8{
     margin: 10px;
     width:195px;
     height:240px;
+}
+.cardTamanio16{
+    margin: 10px;
+    width:175px;
+    height:220px;
+}
+.cardTamanio32{
+    margin: 10px;
+    width:135px;
+    height:155px;
+}
+.imgTamanio8{
+    width:195px;
+    height:240px;
+}
+.imgTamanio16{
+    width:175px;
+    height:220px;
+}
+.imgTamanio32{
+    width:135px;
+    height:155px;
 }
