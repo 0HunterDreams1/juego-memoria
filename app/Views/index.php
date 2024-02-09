@@ -1,5 +1,7 @@
 <?php
 $user_session = session();
+date_default_timezone_set('America/Argentina/Ushuaia');
+setlocale(LC_TIME, 'spanish');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -129,14 +131,14 @@ $user_session = session();
             <?php if (isset($ultimaPartida) AND (isset($estadoPartida) AND $estadoPartida['descripcion'] != 'pausado')) {?>
               <h1 class="my-3">¡Bienvenido <?php echo $user_session->usu_nametag; ?>!</h1>
               <h2 class="my-3">Tu ultima partida <?php if ($estadoPartida['descripcion'] === 'abandonó'){
-                echo " la abandonaste el: ".$ultimaPartida['fecha_Inicio'];
+                echo " la abandonaste el: ".strftime("%A, %d de %B del %Y", strtotime($ultimaPartida['fecha_Inicio']));
               }else {
-                echo  "fue finalizada el: ".$ultimaPartida['fecha_Finalizado'];
+                echo  "fue finalizada el: ".strftime("%A, %d de %B del %Y", strtotime($ultimaPartida['fecha_Finalizado']));
                 } ?></h2>
               <h2 class="my-3">El resultado fue: Usted <?php echo $estadoPartida['descripcion']; ?></h2>
             <?php }else if (isset($estadoPartida) AND (isset($estadoPartida) AND $estadoPartida['descripcion'] === 'pausado')){?>
               <h1 class="my-3">¡Bienvenido <?php echo $user_session->usu_nametag; ?>!</h1>
-              <h2 class="my-3">Tu ultima partida quedo pendiente desde: <?php echo $ultimaPartida['fecha_Inicio']; ?></h2>
+              <h2 class="my-3">Tu ultima partida quedo pendiente desde: <?php echo strftime("%A, %d de %B del %Y", strtotime($ultimaPartida['fecha_Inicio'])); ?></h2>
               <h2 class="my-3">El resultado: Aún no esta concluido</h2>
             <?php }else {?>
               <h1 class="my-3">¡Bienvenido <?php echo $user_session->usu_nametag; ?>!</h1>

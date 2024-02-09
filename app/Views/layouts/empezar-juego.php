@@ -1,3 +1,7 @@
+<?php
+date_default_timezone_set('America/Argentina/Ushuaia');
+setlocale(LC_TIME, 'spanish');
+?>
 <div class="card">
     <div class="card-header col-sm-12">
       <div class="row align-items-center">
@@ -100,7 +104,7 @@
               foreach ($mejoresPartidas as $i => $mejorPartida) { ?>
               <tr>
                 <th scope="row"><?php echo (int)$i+1;?></th>
-                <td><?php echo $mejorPartida['fecha_Finalizado'];?></td>
+                <td><?php echo strftime("%A, %d de %B del %Y", strtotime($mejorPartida['fecha_Finalizado']));?></td>
                 <td><?php echo $mejorPartida['tiempoEnCurso'];?></td>
                 <td><?php echo $mejorPartida['nivelDificultad'];?></td>
               </tr>
