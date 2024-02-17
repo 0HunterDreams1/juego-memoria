@@ -49,7 +49,7 @@ setlocale(LC_TIME, 'spanish');
               <?php if(isset($ultimaPartida) AND (isset($estadoPartida) AND $estadoPartida['descripcion'] === 'pausado')){?>
                 <a id="id_reanudar_partida" class="collapse-item" href="#" onClick="mostrarJuego()"> <i class="fas fa-undo-alt"></i> Reanudar partida </a>
               <?php }else {?>
-                <a id="id_nueva_partida" class="collapse-item" href="#"> <i class="fas fa-cog"></i> Nueva partida</a>
+                <a id="id_nueva_partida" class="collapse-item" href="#" onClick="ventanaOpcionesPartida()"> <i class="fas fa-cog"></i> Nueva partida</a>
               <?php }?>
           </div>
         </div>
@@ -172,8 +172,6 @@ setlocale(LC_TIME, 'spanish');
 
   <script src="<?php echo base_url('js/demo/datatables-demo.js') ?>"></script>
 
-  <script src="<?php echo base_url('ajax/modificar-usuario.js') ?>"></script>
-  <script src="<?php echo base_url('ajax/baja-usuario.js') ?>"></script>
   <script src="<?php echo base_url('ajax/opciones-partida.js') ?>"></script>
   <script src="<?php echo base_url('ajax/partida.js') ?>"></script>
 </body>

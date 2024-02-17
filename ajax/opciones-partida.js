@@ -1,6 +1,3 @@
-const btn_nueva_partida = document.getElementById("id_nueva_partida");
-btn_nueva_partida.addEventListener("click", ventanaOpcionesPartida, true);
-
 function ventanaOpcionesPartida() {
   let xhr = new XMLHttpRequest();
   xhr.addEventListener("readystatechange", estadoIdeal);
@@ -8,11 +5,12 @@ function ventanaOpcionesPartida() {
     "GET",
     "http://localhost/juego-memoria/PartidaController/opcionesPartida",
     true
-    );
-    xhr.send();
+  );
+  xhr.send();
     
-    function estadoIdeal() {
-      if (xhr.readyState === 4 && xhr.status === 200) {
+  function estadoIdeal() {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      let btn_nueva_partida = document.getElementById("id_nueva_partida");
       btn_nueva_partida.hidden=true;
       let respuesta = xhr.responseText;
       let contenedor = document.getElementById("contenido");

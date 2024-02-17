@@ -1,61 +1,79 @@
+var intervalo;
 function mostrarJuego() {
-    let xhr = new XMLHttpRequest();
-    xhr.addEventListener("readystatechange", estadoIdeal);
+  let xhr = new XMLHttpRequest();
+  xhr.addEventListener("readystatechange", estadoIdeal);
+  xhr.open(
+    "GET",
+    "http://localhost/juego-memoria/PartidaController/empezarJuego",
+    true
+  );
+  xhr.send();
   
-    xhr.open(
-      "GET",
-      "http://localhost/juego-memoria/PartidaController/empezarJuego",
-      true
-      );
-      xhr.send();
-  
-    function estadoIdeal() {
-      if (xhr.readyState === 4 && xhr.status === 200) {
-        let respuesta = xhr.responseText;
-        let contenedor = document.getElementById('contenido');
-        contenedor.innerHTML = respuesta;
-        function setTime() {
-          var totalSegundos=document.getElementById('cantSegundosContador');
-          var seg=parseInt(totalSegundos.innerHTML)+1;
-          totalSegundos.innerHTML=seg;
-          let segundos=document.getElementById("idSegundos");
-          let minutos=document.getElementById("idMinutos");
-          let hora=document.getElementById("idHoras");
-          segundos.innerHTML = pad(seg % 60);
-          if(Number.isInteger(seg / 60)){
-            minutos.innerHTML = pad(parseInt(seg / 60));
-            if('Ilimitado'!=document.getElementById('idTiempoLimite').innerHTML && minutos.innerHTML===document.getElementById('idTiempoLimite').innerHTML.slice(-5,-3)){
-              clearInterval(intervalo);
-              alert('¡Oh no te quedaste sin tiempo!. Suerte para la próxima.');
-              let resultado='perdio';
-              enviarDatosPartida(resultado);
-            }
-          }
-          if(Number.isInteger(seg/3600)){
-            hora.innerHTML = pad(parseInt(seg/3600));
-          }
-        }
-        var intervalo = setInterval(setTime, 1000);
-      }
+  function estadoIdeal() {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      let respuesta = xhr.responseText;
+      let contenedor = document.getElementById('contenido');
+      contenedor.innerHTML = respuesta;
+      intervalo = setInterval(setTime, 1000);
     }
   }
+}
 
-  
-  function pad(val) {
-    var valString = val + "";
-    if (valString.length < 2) {
-      return "0" + valString;
-    } else {
-      return valString;
+/**
+ * Es el encargado de ir sumando los segundos e ir agregandolos a la vista.
+ */
+function setTime() {
+  var totalSegundos=document.getElementById('cantSegundosContador');
+  var seg=parseInt(totalSegundos.innerHTML)+1;
+  totalSegundos.innerHTML=seg;
+  let segundos=document.getElementById("idSegundos");
+  let minutos=document.getElementById("idMinutos");
+  let hora=document.getElementById("idHoras");
+  segundos.innerHTML = agregaUnCero(seg % 60);
+  if(Number.isInteger(seg / 60)){
+    minutos.innerHTML = agregaUnCero(parseInt(seg / 60));
+    if('Ilimitado'!=document.getElementById('idTiempoLimite').innerHTML && minutos.innerHTML===document.getElementById('idTiempoLimite').innerHTML.slice(-5,-3)){
+      clearInterval(intervalo);
+      alert('¡Oh no te quedaste sin tiempo!. Suerte para la próxima.');
+      let resultado='perdio';
+      enviarDatosPartida(resultado);
     }
   }
+  if(Number.isInteger(seg/3600)){
+    hora.innerHTML = agregaUnCero(parseInt(seg/3600));
+  }
+}
+
+/**
+ * Agrega un cero a la izquierda si el número es menor a dos digitos
+ * @param val es el string que contiene un número
+ * @returns 
+ */
+function agregaUnCero(val) {
+  var valString = val + "";
+  if (valString.length < 2) {
+    return "0" + valString;
+  } else {
+    return valString;
+  }
+}
+
+/**
+ * Si presionas el boton rendirse se acciona esta función
+ */
 function rendirse(){
   if (confirm('¿Seguro que desea rendirse?')){
+    clearInterval(intervalo);
     let resultado= 'abandono';
     enviarDatosPartida(resultado);
   }
 }
 
+/**
+ * Compara las cartas si el contador de clicks es distinto de 0, verifica que las cartas son iguales, verifica si superaste la cantidad de intentos y si ya descubriste todas las cartas.
+ * @param {*} idImage Es el id de la imagen(poisicion en el array)
+ * @param {*} nameCarta Es el id de la carta en la base de datos
+ */
 function meHicisteClick(idImage, nameCarta){
   let imagen=document.getElementById(idImage);
   let contador=document.getElementById("idContador");
@@ -94,6 +112,7 @@ function meHicisteClick(idImage, nameCarta){
             
   }
   if(aciertos.value===idMaxAciertos){
+    clearInterval(intervalo);
     alert('GANASTE'
     +'\n¡¡¡EXCELENTE MEMORIA!!!'
     +'\nTu tiempo: '+document.getElementById("idHoras").innerHTML+':'+document.getElementById("idMinutos").innerHTML+':'+document.getElementById("idSegundos").innerHTML);
@@ -101,6 +120,7 @@ function meHicisteClick(idImage, nameCarta){
     enviarDatosPartida(resultado); 
   }
   if (document.getElementById("idIntentos").innerHTML===document.getElementById("idIntentosTotales").innerHTML) {
+    clearInterval(intervalo);
     let mensaje='';
     if(aciertos.value >= (idMaxAciertos*0.80)){
       mensaje='¡¡¡MUY BUENA MEMORIA!!!'
@@ -119,11 +139,12 @@ function meHicisteClick(idImage, nameCarta){
 
 function guardar(){
   if (confirm('¿Seguro que desea guardar la partida, para retomarla luego?')){
+    clearInterval(intervalo);
     let resultado = 'guardar';
     enviarDatosPartida(resultado);
-    }
   }
-  
+}
+
 function enviarDatosPartida(resul){
   let posiciones = [];
   if (resul==='guardar') {

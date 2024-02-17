@@ -35,7 +35,6 @@ $routes->post('subir-opciones-partida', 'PartidaController::subirOpcionesPartida
 $routes->post('subir-resultados-partida', 'PartidaController::finalizoJuego');
 
 
-
 /**
 * --------------------------------------------------------------------
 * Additional Routing

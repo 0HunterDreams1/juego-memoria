@@ -17,6 +17,11 @@ class GestionController extends BaseController
         $this->estadoPartida = new EstadoPartidaModel();
     }
     
+    public function error()
+    {
+    return redirect()->to('/');
+    }
+
     public function index()
     {
         if (isset($this->session->idUsuario)) {
