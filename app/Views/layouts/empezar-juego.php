@@ -46,7 +46,7 @@ setlocale(LC_TIME, 'spanish');
     </div>
   <div class="card-body">
     <div class="row">
-      <div class="col-sm-9">
+      <div class="col-sm-8">
         <div class="row">
           <?php if($partida['idEstadoPartida']==='1'){
             foreach ($cartasGuardadas as $indice => $cartaGuardada) { 
@@ -86,16 +86,17 @@ setlocale(LC_TIME, 'spanish');
             <?php }}?>
         </div>
       </div>
-      <div class="col-sm-3">
+      <div class="col-sm-4">
         <table class="table table-info table-striped table-sm" style="text-align:center">
           <thead>
             <tr>
-              <td colspan="4">TOP 5</td>
+              <td colspan="5">TOP 5</td>
             </tr>
             <tr>
               <th scope="col">#</th>
               <th scope="col">Finalizado</th>
               <th scope="col">Tiempo</th>
+              <th scope="col">Tiempo Limite</th>
               <th scope="col">Dificultad</th>
             </tr>
           </thead>
@@ -104,8 +105,9 @@ setlocale(LC_TIME, 'spanish');
               foreach ($mejoresPartidas as $i => $mejorPartida) { ?>
               <tr>
                 <th scope="row"><?php echo (int)$i+1;?></th>
-                <td><?php echo strftime("%A, %d de %B del %Y", strtotime($mejorPartida['fecha_Finalizado']));?></td>
+                <td><?php echo strftime("%d/%m/%Y", strtotime($mejorPartida['fecha_Finalizado']));?></td>
                 <td><?php echo $mejorPartida['tiempoEnCurso'];?></td>
+                <td><?php echo $mejorPartida['tiempoLimite'];?></td>
                 <td><?php echo $mejorPartida['nivelDificultad'];?></td>
               </tr>
             <?php }} ?>
